@@ -1,0 +1,19 @@
+.responsive-bg {
+    background-size: 100px 100px; 
+    background-position: -12px 0;
+  }
+  
+  @media (min-width: 640px) {
+    /* Medium screens (sm breakpoint in Tailwind) */
+    .responsive-bg {
+      background-size: 200px 200px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    /* Large screens (md breakpoint in Tailwind) */
+    .responsive-bg {
+      background-size: 250px 250px;
+    }
+  }
+  
