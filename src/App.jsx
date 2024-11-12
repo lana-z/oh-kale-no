@@ -34,9 +34,9 @@ function App() {
   };
 
   return (
-    <div 
+    <div
       className="min-h-screen flex flex-col items-center justify-center bg-green-100 bg-[url('/kale.png')] bg-repeat p-4 sm:p-6 md:p-8 responsive-bg"
-      >
+    >
       <div className="bg-white bg-opacity-80 rounded-lg p-8 max-w-md w-full">
         <h1 className="text-3xl italic mb-4 text-center">oh, kale no!</h1>
         <p className="text-sm sm:text-base text-center mb-6">
@@ -63,7 +63,7 @@ function App() {
             className="bg-transparent border border-gray-400 rounded-md px-3 py-1 text-sm sm:px-4 sm:py-2 sm:text-base flex items-center hover:bg-gray-100"
             onClick={() => setShowChat(!showChat)}
           >
-            <Message className="mr-2" /> Customize 
+            <Message className="mr-2" /> Customize
           </button>
           <button
             className="bg-green-600 text-white rounded-md px-3 py-1 text-sm sm:px-4 sm:py-2 sm:text-base flex items-center hover:bg-green-700"
@@ -72,16 +72,17 @@ function App() {
             <Refresh className="mr-2" /> Refresh my day
           </button>
         </div>
-        <p className='bg-red-100 text-center m-6'>
-            insert counter here
-          </p>
 
         {showChat && (
           <div className="mt-6">
             <CustomCard content="Hey there, what would you like to focus on today?" />
           </div>
         )}
+        <p className='bg-red-100 text-center m-6'>
+          insert counter here
+        </p>
       </div>
+
     </div>
   );
 }
