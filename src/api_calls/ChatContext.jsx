@@ -9,16 +9,29 @@ async function fetchCsrfToken() {
             method: 'GET',
             credentials: 'include',
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
             }
         });
-
+        
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        // Get token from response
+        const data = await response.json();
 
-        const data = await response.json();  // parse as JSON
-        return data.csrftoken;
+        // Get token from cookie as a backup
+        const cookieToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrftoken='))
+            ?.split('=')[1];
+        
+        const csrfToken = data.csrftoken || cookieToken;
+
+        if (!csrfToken) {
+            throw new Error('CSRF token not found in response or cookies');
+        }
+        return csrfToken;
     } catch (error) {
         console.error('Error fetching CSRF token:', error);
         return null;
