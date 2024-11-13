@@ -17,21 +17,19 @@ async function fetchCsrfToken() {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        // Get token from response
-        const data = await response.json();
 
-        // Get token from cookie as a backup
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Get token from cookie, should match response
         const cookieToken = document.cookie
             .split('; ')
             .find(row => row.startsWith('csrftoken='))
             ?.split('=')[1];
-        
-        const csrfToken = data.csrftoken || cookieToken;
 
-        if (!csrfToken) {
-            throw new Error('CSRF token not found in response or cookies');
+        if (!cookieToken) {
+            throw new Error('CSRF token not found in cookies');
         }
-        return csrfToken;
+        return cookieToken;
     } catch (error) {
         console.error('Error fetching CSRF token:', error);
         return null;
