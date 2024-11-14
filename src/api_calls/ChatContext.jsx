@@ -1,11 +1,11 @@
-const API_BASE_URL = import.meta.env.PROD
+const VITE_API_BASE_URL = import.meta.env.PROD
     ? 'https://oh-kale-no-backend.onrender.com'
     : 'http://localhost:8000';
 
 
 async function fetchCsrfToken() {
     try {
-        const response = await fetch(`${API_BASE_URL}/core/get-csrf-token/`, {
+        const response = await fetch(`${VITE_API_BASE_URL}/core/get-csrf-token/`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -44,12 +44,12 @@ export async function getClaudeResponse(userPrompt) {
         }
         console.log('CSRF token: ', csrftoken);
 
-        const response = await fetch(`${API_BASE_URL}/core/get-claude-response/`, {
+        const response = await fetch(`${VITE_API_BASE_URL}/core/get-claude-response/`, {
             method: 'POST',
             credentials: 'include', 
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,  // Add the CSRF token to the headers
+                'X-CSRFTOKEN': csrftoken,  // Add the CSRF token to the headers
             },
             body: JSON.stringify({ userPrompt }),  // Convert to JSON string
         });
