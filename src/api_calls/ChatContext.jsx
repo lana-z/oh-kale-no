@@ -32,7 +32,7 @@ async function fetchCsrfToken() {
         return cookieToken;
     } catch (error) {
         console.error('Error fetching CSRF token:', error);
-        return null;
+        throw error;
     }
 }
 
@@ -49,7 +49,8 @@ export async function getClaudeResponse(userPrompt) {
             credentials: 'include', 
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFTOKEN': csrftoken,  // Add the CSRF token to the headers
+                'X-CSRFToken': csrftoken,
+                'X-Requested-With': 'XMLHttpRequest',
             },
             body: JSON.stringify({ userPrompt }),  // Convert to JSON string
         });
