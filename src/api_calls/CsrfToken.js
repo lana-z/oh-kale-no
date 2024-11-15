@@ -23,14 +23,17 @@ export async function fetchCsrfToken() {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        // Extract CSRF token from cookies
-        csrfToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrftoken='))
-            ?.split('=')[1];
+        const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
+            const [name, value] = cookie.split('=');
+            acc[name] = value;
+            return acc;
+        }, {});
+
+        csrfToken = cookies['csrftoken'] || null
 
         console.log('csrfToken returned from fetchCsrfToken:', csrfToken);
         console.log('document.cookie in fetchCsrfToken: ', document.cookie);
+        
         if (!csrfToken) {
             throw new Error('CSRF token not found in cookies.');
         }
