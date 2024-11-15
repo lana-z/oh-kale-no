@@ -27,23 +27,23 @@ async function fetchCsrfToken() {
             .find(row => row.startsWith('csrftoken='))
             ?.split('=')[1];
 
-        console.log('Token from cookie:', cookieToken);
-        
+        console.log('cookieToken returned from fetchCsrfToken:', cookieToken);
+        console.log('document.cookie in fetchCsrfToken: ', document.cookie);
         if (!cookieToken) {
-            throw new Error('CSRF token not found in cookies');
+            throw new Error('CSRF token not found in cookies.');
         }
         
         return cookieToken; 
     } catch (error) {
-        console.error('Error fetching CSRF token:', error);
+        console.error('Error fetching CSRF token: ', error);
         throw error;
     }
 }
 
 export async function getClaudeResponse(userPrompt) {
+    const csrftoken = await fetchCsrfToken();
     try {
-        const csrftoken = await fetchCsrfToken();
-        console.log('Using CSRF token for Claude request:', csrftoken);
+        console.log('Using CSRF token for Claude request: ', csrftoken);
         console.log('Current cookies:', document.cookie);
 
         const response = await fetch(`${VITE_API_BASE_URL}/core/get-claude-response/`, {
@@ -59,15 +59,15 @@ export async function getClaudeResponse(userPrompt) {
 
         if (!response.ok) {
             const errorText = await response.text();
-            console.error('Response not OK:', response.status, errorText);
-            console.error('Request headers:', Object.fromEntries([...response.headers]));
+            console.error('Response not OK: ', response.status, errorText);
+            console.error('Request headers: ', Object.fromEntries([...response.headers]));
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
         return data.message;
     } catch (error) {
-        console.error('Error fetching Claude response:', error);
+        console.error('Error fetching Claude response: ', error);
         return "Sorry, there seems to be a veggie jam in my Ninja. Please try again later.";
     }
 }
