@@ -18,10 +18,9 @@ async function fetchCsrfToken() {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
-        const data = await response.json();
-        console.log('Token from response:', data.csrfToken);
         
+        await new Promise(resolve => setTimeout(resolve, 100));
+
         // Get token from cookie
         const cookieToken = document.cookie
             .split('; ')
@@ -34,7 +33,7 @@ async function fetchCsrfToken() {
             throw new Error('CSRF token not found in cookies');
         }
         
-        return data.csrfToken; // Use token from response instead of cookie
+        return cookieToken; 
     } catch (error) {
         console.error('Error fetching CSRF token:', error);
         throw error;
