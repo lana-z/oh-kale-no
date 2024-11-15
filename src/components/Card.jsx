@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getClaudeResponse } from '../api_calls/ChatContext'; // Adjust the import path as needed
+import { getClaudeResponse } from '../api_calls/ChatApi'; 
 
 function CustomCard({ content }) {
   const [userInput, setUserInput] = useState('');
