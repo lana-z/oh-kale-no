@@ -1,0 +1,28 @@
+{
+    "headers": [
+      {
+        "source": "/(.*)",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "https://ohkaleno.xyz"
+          },
+          {
+            "key": "Access-Control-Allow-Methods",
+            "value": "GET, POST, OPTIONS"
+          },
+          {
+            "key": "Access-Control-Allow-Headers",
+            "value": "X-CSRFToken, Content-Type, X-Requested-With"
+          }
+        ]
+      }
+    ],
+    "redirects": [
+    {
+        "source": "/www.ohkaleno.xyz/(.*)",
+        "destination": "https://ohkaleno.xyz/$1",
+        "permanent": true
+    }
+    ]
+  }
