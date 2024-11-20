@@ -1,7 +1,7 @@
 import { fetchCsrfToken } from './CsrfToken.js';
 
 const VITE_API_BASE_URL = import.meta.env.PROD
-    ? 'https://ohkaleno.xyz'
+    ? 'https://oh-kale-no-backend.onrender.com'
     : 'http://localhost:8000';
 
 export async function getClaudeResponse(userPrompt) {
