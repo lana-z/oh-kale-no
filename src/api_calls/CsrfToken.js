@@ -55,16 +55,15 @@ function getCookie(name) {
     const cookieArray = cookies.split(';').map(c => c.trim());
     console.log('Cookie array:', cookieArray);
     
-    // Try to find cookie with any domain
     for (const cookie of cookieArray) {
         if (cookie.startsWith(name + '=')) {
             const value = cookie.split('=')[1];
-            console.log(`Found ${name} cookie:`, value);
+            console.log(`Found ${name} cookie with value:`, value);
             return value;
         }
     }
 
-    console.log(`${name} cookie not found`);
+    console.log(`${name} cookie not found in:`, cookieArray);
     return null;
 }
 
