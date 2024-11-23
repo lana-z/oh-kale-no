@@ -8,18 +8,24 @@ export async function getClaudeResponse(userPrompt) {
     
     try {
         const csrftoken = await fetchCsrfToken(); //Use cached token if available
-        console.log('csrftoken returned from fetchCsrfToken in getClaudeResponse: ', csrftoken);
-        console.log('Current cookies via document.cookie in getClaudeResponse: ', document.cookie);
+        console.log('Making request to get-claude-response with:');
+        console.log('- CSRF token:', csrftoken);
+        console.log('- User prompt:', userPrompt);
+        console.log('- URL:', `${VITE_API_BASE_URL}/core/get-claude-response/`);
 
         const response = await fetch(`${VITE_API_BASE_URL}/core/get-claude-response/`, {
             method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,  // Use csrf token in the header
+                'X-CSRFTOKEN': csrftoken, 
+                'X-Requested-With': 'XMLHttpRequest'
             },
             body: JSON.stringify({ userPrompt })
         });
+
+        console.log('Response status:', response.status);
+        console.log('Response headers:', Object.fromEntries([...response.headers]));
 
         if (!response.ok) {
             const errorText = await response.text();

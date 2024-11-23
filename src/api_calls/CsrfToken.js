@@ -6,11 +6,12 @@ let csrfToken = null;
 
 export async function fetchCsrfToken() {
     if (csrfToken) {
-        console.log('CSRF token already cached:', csrfToken);
+        console.log('Using cached CSRF token:', csrfToken);
         return csrfToken;
     }
+    
+    console.log('Fetching CSRF token...');
     try {
-        console.log('Fetching CSRF token.');
         const response = await fetch(`${VITE_API_BASE_URL}/core/get-csrf-token/`, {
             method: 'GET',
             credentials: 'include',
@@ -21,30 +22,46 @@ export async function fetchCsrfToken() {
         });
         
         if (!response.ok) {
+            console.error('Failed to fetch CSRF token:', response.status, response.statusText);
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        
+
+        // Try to get token from cookie first
         csrfToken = getCookie('csrftoken');
-        console.log('CSRF token retrieved from cookies:', csrfToken);
+        
+        // Log the token we're using
+        console.log('Using CSRF token:', csrfToken);
 
         if (!csrfToken) {
-            throw new Error('CSRF token not found in response.');
+            throw new Error('CSRF token not found in cookie');
         }
-        
-        return csrfToken; 
+
+        console.log('Successfully retrieved CSRF token');
+        return csrfToken;
     } catch (error) {
-        console.error('Error fetching CSRF token: ', error);
+        console.error('Error in fetchCsrfToken:', error);
         throw error;
     }
 }
 
-export default fetchCsrfToken;
-
-
 function getCookie(name) {
-    console.log('Document cookies:', document.cookie);
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
+    const cookies = document.cookie;
+    console.log('All cookies:', cookies);
+    if (!cookies) {
+        console.log('No cookies found');
+        return null;
+    }
+
+    const cookieArray = cookies.split(';').map(c => c.trim());
+    console.log('Cookie array:', cookieArray);
+    const cookieValue = cookieArray.find(row => row.startsWith(name + '='));
+    console.log('Found cookie value:', cookieValue);
+    
+    if (cookieValue) {
+        return cookieValue.split('=')[1];
+    }
+
     return null;
 }
+
+export default fetchCsrfToken;
