@@ -26,14 +26,14 @@ export async function fetchCsrfToken() {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        // Try to get token from cookie first
-        csrfToken = getCookie('csrftoken');
+        const data = await response.json();
+        csrfToken = data.csrfToken;
         
         // Log the token we're using
-        console.log('Using CSRF token:', csrfToken);
+        console.log('Using CSRF token from response:', csrfToken);
 
         if (!csrfToken) {
-            throw new Error('CSRF token not found in cookie');
+            throw new Error('CSRF token not found in response');
         }
 
         console.log('Successfully retrieved CSRF token');
@@ -42,29 +42,6 @@ export async function fetchCsrfToken() {
         console.error('Error in fetchCsrfToken:', error);
         throw error;
     }
-}
-
-function getCookie(name) {
-    const cookies = document.cookie;
-    console.log('All cookies:', cookies);
-    if (!cookies) {
-        console.log('No cookies found');
-        return null;
-    }
-
-    const cookieArray = cookies.split(';').map(c => c.trim());
-    console.log('Cookie array:', cookieArray);
-    
-    for (const cookie of cookieArray) {
-        if (cookie.startsWith(name + '=')) {
-            const value = cookie.split('=')[1];
-            console.log(`Found ${name} cookie with value:`, value);
-            return value;
-        }
-    }
-
-    console.log(`${name} cookie not found in:`, cookieArray);
-    return null;
 }
 
 export default fetchCsrfToken;
