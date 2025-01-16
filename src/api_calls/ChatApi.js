@@ -18,7 +18,7 @@ export async function getClaudeResponse(userPrompt) {
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFTOKEN': csrftoken, 
+                'x-csrftoken': csrftoken, 
                 'X-Requested-With': 'XMLHttpRequest'
             },
             body: JSON.stringify({ userPrompt })
@@ -26,6 +26,7 @@ export async function getClaudeResponse(userPrompt) {
 
         console.log('Response status:', response.status);
         console.log('Response headers:', Object.fromEntries([...response.headers]));
+        console.log('Request headers:', Object.fromEntries([...response.headers]));
 
         if (!response.ok) {
             const errorText = await response.text();
