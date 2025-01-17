@@ -17,6 +17,15 @@ function CustomCard({ content }) {
     }
   };
 
+  const formatResponse = (text) => {
+    const sentences = text.split(/(?<=\.)/).filter(Boolean);
+    return sentences.map((sentence, index) => (
+      <p key={index} className="mb-2 last:mb-0">
+        {sentence.trim()}
+      </p>
+    ));
+  };
+
   const handleSend = async () => {
     if (userInput.trim() && !isLoading) {
       setIsLoading(true);
@@ -59,7 +68,9 @@ function CustomCard({ content }) {
         </div>
         {claudeResponse && (
           <div className="mt-4 p-3 bg-gray-100 rounded-md">
-            <p className="text-sm md:text-base">{claudeResponse}</p>
+            <div className="text-sm md:text-base space-y-2">
+              {formatResponse(claudeResponse)}
+            </div>
           </div>
         )}
       </div>
