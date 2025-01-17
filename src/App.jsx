@@ -59,6 +59,10 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
+  const toggleChat = () => {
+    setShowChat(!showChat);
+  };
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center bg-green-100 bg-[url('/kale.png')] bg-repeat p-4 sm:p-6 md:p-8 responsive-bg"
@@ -84,18 +88,13 @@ function App() {
           ))}
         </div>
 
-        <div className="mt-6 flex justify-between">
+        <div className="my-8 flex justify-center">
           <button
-            className="bg-transparent border border-gray-400 rounded-md px-3 py-1 text-sm sm:px-4 sm:py-2 sm:text-base flex items-center hover:bg-gray-100"
-            onClick={() => setShowChat(!showChat)}
+            onClick={toggleChat}
+            className="flex items-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
           >
-            <Message className="mr-2" /> Customize
-          </button>
-          <button
-            className="bg-green-600 text-white rounded-md px-3 py-1 text-sm sm:px-4 sm:py-2 sm:text-base flex items-center hover:bg-green-700"
-            onClick={() => window.location.reload()}
-          >
-            <Refresh className="mr-2" /> Refresh my day
+            <Message className="mr-2" />
+            Chat
           </button>
         </div>
 
@@ -104,10 +103,20 @@ function App() {
             <CustomCard content="Hey there, what would you like to focus on today?" />
           </div>
         )}
-        <div className="flex items-center justify-center space-x-1 mt-6 p-2">
-          <span className="text-sm">You + </span>
+        
+        <div className="flex flex-wrap items-center justify-center gap-1 mt-6 mb-8 text-center">
+          <span className="text-sm md:text-base">You + </span>
           <AnimatedCounter value={visitCount} />
-          <span className="text-sm"> others choosing that healthy vibe!</span>
+          <span className="text-sm md:text-base">others choosing that healthy vibe!</span>
+        </div>
+
+        <div className="flex justify-center">
+          <button
+            className="bg-green-600 text-white rounded-md px-3 py-1 text-sm sm:px-4 sm:py-2 sm:text-base flex items-center justify-center hover:bg-green-700"
+            onClick={() => window.location.reload()}
+          >
+            <Refresh className="mr-2" /> Refresh my day
+          </button>
         </div>
       </div>
 

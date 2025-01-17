@@ -18,7 +18,7 @@ export function AnimatedCounter({ value }) {
   return (
     <motion.span
       ref={ref}
-      className="tabular-nums text-2xl font-semibold"
+      className="text-sm md:text-base font-semibold"
     >
       {rounded}
     </motion.span>
