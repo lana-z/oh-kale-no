@@ -9,11 +9,24 @@ const VITE_API_BASE_URL = import.meta.env.PROD ? PROD_URL : DEV_URL;
 
 export async function getClaudeResponse(userInput) {
     try {
-        // Get fresh CSRF token directly
+        // Get fresh CSRF token
         const csrfResponse = await fetch(`${VITE_API_BASE_URL}/core/get-csrf-token/`, {
-            credentials: 'include'
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
         });
+        
+        if (!csrfResponse.ok) {
+            throw new Error('Failed to get CSRF token');
+        }
+        
         const { csrfToken } = await csrfResponse.json();
+
+        // Small delay to ensure cookie is set
+        await new Promise(resolve => setTimeout(resolve, 100));
 
         const response = await fetch(`${VITE_API_BASE_URL}/core/get-claude-response/`, {
             method: 'POST',

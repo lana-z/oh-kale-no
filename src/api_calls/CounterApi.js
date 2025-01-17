@@ -25,25 +25,44 @@ export async function getVisitCount() {
 
 export async function incrementVisitCount() {
     try {
+
         const csrfResponse = await fetch(`${VITE_API_BASE_URL}/core/get-csrf-token/`, {
-            credentials: 'include'
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
         });
+        
+        if (!csrfResponse.ok) {
+            throw new Error('Failed to get CSRF token');
+        }
+        
         const { csrfToken } = await csrfResponse.json();
 
-        const response = await fetch(`${VITE_API_BASE_URL}/core/increment-visit/`, {
+        // Small delay to ensure cookie is set
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const response = await fetch(`${VITE_API_BASE_URL}/core/increment-visit-count/`, {
             method: 'POST',
             credentials: 'include',
             headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
             }
         });
+
         if (!response.ok) {
-            throw new Error(`Request failed`);
+            throw new Error('Failed to increment visit count');
         }
+
         const data = await response.json();
-        return data.count;
+        return data.visit_count;
     } catch (error) {
-        return 0;
+        console.error('Counter Error:', error);
+        return '[loading...]';
     }
 }
