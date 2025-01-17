@@ -9,7 +9,11 @@ const VITE_API_BASE_URL = import.meta.env.PROD ? PROD_URL : DEV_URL;
 
 export async function getClaudeResponse(userInput) {
     try {
-        const csrfToken = await fetchCsrfToken();
+        // Get fresh CSRF token directly
+        const csrfResponse = await fetch(`${VITE_API_BASE_URL}/core/get-csrf-token/`, {
+            credentials: 'include'
+        });
+        const { csrfToken } = await csrfResponse.json();
 
         const response = await fetch(`${VITE_API_BASE_URL}/core/get-claude-response/`, {
             method: 'POST',
@@ -17,7 +21,8 @@ export async function getClaudeResponse(userInput) {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
             },
             body: JSON.stringify({ user_input: userInput })
         });
