@@ -2,25 +2,50 @@
 
 A playful web app designed to encourage healthy choices in challenging times with veggie-themed puns.
 
-### Author
+#Author
 - [Lana Zumbrunn](https://github.com/lana-z)
 
+
 ## Links
-- [Live site]() TODO
+- Live site: [ohkaleno.xyz](https://ohkaleno.xyz)
+- Frontend repo: [oh-kale-no](https://github.com/lana-z/oh-kale-no)
+- Backend repo: [oh-kale-no-backend](https://github.com/lana-z/oh-kale-no-backend)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
+- Live Demo: TODO 
+
+## Tech Stack
+
+### Frontend
+- React with Vite
+- TailwindCSS
+- Material UI
+- Responsive design
+- Deployed on Vercel
+
+### Backend
+- Django REST Framework
+- Anthropic's Claude 3 Sonnet AI
+- RESTful API endpoints
+- Cross-origin resource sharing (CORS)
 
 ## Features
-- TODO: progress tracking, AI chat, etc.
 
+### Daily Wellness Tracker for Challenging Times
+- 8 predefined, light-hearted, healthy activities 
+- Progress bar visualization
+- TODO: Customize activity list
 
-### Tech Stack
-- **Frontend**: Vite, React, Tailwind CSS
-- **AI Integration**: TODO
-- **Development Tools**: Cursor, Node.js
+### Social Engagement
+- Sense of belonging to a community of like-minded others choosing self-care and wellness via a user counter
+
+### AI-Powered Support
+- Claude AI integration for natural language processing
+- Personalized chat engagement
+- Vegetable-pun humored responses
 
 
 ## Contributing
@@ -31,7 +56,7 @@ A playful web app designed to encourage healthy choices in challenging times wit
    ```bash
    npm install
    ```
-3. Create a `.env` file in the root of your project and include:
+3. Create a `.env` file in the root directory and include:
 
     ```
     VITE_API_KEY=your-api-key

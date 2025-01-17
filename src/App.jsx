@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Message, Refresh } from '@mui/icons-material';
 import CustomCard from './components/Card';
 import CustomCheckbox from './components/Checkbox';
 import CustomProgress from './components/Progress';
+import { getVisitCount, incrementVisitCount } from './api_calls/CounterApi';
+import { AnimatedCounter } from './components/AnimatedCounter';
 import './App.css';
 
 function App() {
   const [score, setScore] = useState(0);
   const [showChat, setShowChat] = useState(false);
+  const [visitCount, setVisitCount] = useState(0);
 
   const healthyChoices = [
     { id: 1, label: "ate something green", emoji: "🥬", checked: false },
@@ -33,13 +36,36 @@ function App() {
     );
   };
 
+  useEffect(() => {
+    const initializeCounter = async () => {
+      // Increment count on initial page load
+      const newCount = await incrementVisitCount();
+      setVisitCount(newCount);
+    };
+
+    const fetchCount = async () => {
+      // Just get the current count without incrementing
+      const count = await getVisitCount();
+      setVisitCount(count);
+    };
+
+    // Initial load - increment counter
+    initializeCounter();
+
+    // Set up interval to just fetch current count
+    const interval = setInterval(fetchCount, 30000);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center bg-green-100 bg-[url('/kale.png')] bg-repeat p-4 sm:p-6 md:p-8 responsive-bg"
     >
       <div className="bg-white bg-opacity-80 rounded-lg p-8 max-w-md w-full">
         <h1 className="text-3xl italic mb-4 text-center">oh, kale no!</h1>
-        <p className="text-sm sm:text-base text-center mb-6">
+        <p className="text-sm text-center mb-6">
           when life gives us avocados, we make guacamole
         </p>
 
@@ -78,9 +104,11 @@ function App() {
             <CustomCard content="Hey there, what would you like to focus on today?" />
           </div>
         )}
-        <p className='bg-red-100 text-center m-6'>
-          insert counter here
-        </p>
+        <div className="flex items-center justify-center space-x-1 mt-6 p-2">
+          <span className="text-sm">You + </span>
+          <AnimatedCounter value={visitCount} />
+          <span className="text-sm"> others choosing that healthy vibe!</span>
+        </div>
       </div>
 
     </div>
