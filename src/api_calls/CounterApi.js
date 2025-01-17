@@ -1,6 +1,12 @@
-const VITE_API_BASE_URL = import.meta.env.PROD
-    ? 'https://oh-kale-no-backend.onrender.com'
-    : 'http://localhost:8000';
+import { fetchCsrfToken } from './CsrfToken';
+
+// Production URL
+const PROD_URL = 'https://oh-kale-no-backend.onrender.com';
+// Local development URL for local testing
+const DEV_URL = 'http://192.168.1.41:8000';
+// const DEV_URL = 'http://localhost:8000';
+
+const VITE_API_BASE_URL = import.meta.env.PROD ? PROD_URL : DEV_URL;
 
 export async function getVisitCount() {
     try {
