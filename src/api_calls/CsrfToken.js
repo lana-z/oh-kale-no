@@ -19,7 +19,8 @@ export async function fetchCsrfToken() {
             credentials: 'include',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
             }
         });
 
@@ -38,6 +39,10 @@ export async function fetchCsrfToken() {
         }
 
         cachedToken = data.csrfToken;
+        
+        // Add a delay to ensure cookie is set in Safari
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         return cachedToken;
     } catch (error) {
         console.error('CSRF Token Error:', error);
