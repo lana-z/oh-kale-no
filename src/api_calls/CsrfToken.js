@@ -7,9 +7,14 @@ const DEV_URL = 'http://192.168.1.41:8000';
 const VITE_API_BASE_URL = import.meta.env.PROD ? PROD_URL : DEV_URL;
 
 let cachedToken = null;
+let tokenExpiry = null;
+const TOKEN_LIFETIME = 3600000; // 1 hour in milliseconds
+
 
 export async function fetchCsrfToken() {
-    if (cachedToken) {
+    const now = Date.now();
+
+    if (cachedToken && tokenExpiry && now < tokenExpiry) {
         return cachedToken;
     }
 
@@ -39,6 +44,7 @@ export async function fetchCsrfToken() {
         }
 
         cachedToken = data.csrfToken;
+        tokenExpiry = now + TOKEN_LIFETIME;
         
         // Add a delay to ensure cookie is set in Safari
         await new Promise(resolve => setTimeout(resolve, 100));
