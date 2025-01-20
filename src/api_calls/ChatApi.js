@@ -9,11 +9,8 @@ const VITE_API_BASE_URL = import.meta.env.PROD ? PROD_URL : DEV_URL;
 
 export async function getClaudeResponse(userInput) {
     try {
-        // Get fresh CSRF token directly
-        const csrfResponse = await fetch(`${VITE_API_BASE_URL}/core/get-csrf-token/`, {
-            credentials: 'include'
-        });
-        const { csrfToken } = await csrfResponse.json();
+        // Use cached token
+        const csrfToken = await fetchCsrfToken();
 
         const response = await fetch(`${VITE_API_BASE_URL}/core/get-claude-response/`, {
             method: 'POST',

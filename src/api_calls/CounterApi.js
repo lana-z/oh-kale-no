@@ -25,17 +25,16 @@ export async function getVisitCount() {
 
 export async function incrementVisitCount() {
     try {
-        const csrfResponse = await fetch(`${VITE_API_BASE_URL}/core/get-csrf-token/`, {
-            credentials: 'include'
-        });
-        const { csrfToken } = await csrfResponse.json();
+        const { csrfToken } = await fetchCsrfToken();
 
         const response = await fetch(`${VITE_API_BASE_URL}/core/increment-visit/`, {
             method: 'POST',
             credentials: 'include',
             headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
             }
         });
         if (!response.ok) {
@@ -43,7 +42,7 @@ export async function incrementVisitCount() {
         }
         const data = await response.json();
         return data.count;
-    } catch (error) {
+    } catch {
         return 0;
     }
 }
