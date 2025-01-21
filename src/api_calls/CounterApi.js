@@ -1,24 +1,24 @@
 import { fetchCsrfToken, clearCachedToken } from './CsrfToken';
-
-// Production URL
-const PROD_URL = 'https://oh-kale-no-backend.onrender.com';
-// Local development URL for local testing
-const DEV_URL = 'http://192.168.1.41:8000';
-// const DEV_URL = 'http://localhost:8000';
-
-const VITE_API_BASE_URL = import.meta.env.PROD ? PROD_URL : DEV_URL;
+import { API_BASE_URL } from './config';
 
 export async function getVisitCount() {
     try {
-        const response = await fetch(`${VITE_API_BASE_URL}/core/visit-count/`, {
+        // Add delay for Safari
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        const response = await fetch(`${API_BASE_URL}/core/visit-count/`, {
             credentials: 'include',
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
             }
         });
+        
         if (!response.ok) {
             throw new Error(`Request failed`);
         }
+        
         const data = await response.json();
         return data.count;
     } catch {
@@ -29,8 +29,11 @@ export async function getVisitCount() {
 export async function incrementVisitCount(retryCount = 0) {
     try {
         const csrfToken = await fetchCsrfToken();
+        
+        // Add delay for Safari
+        await new Promise(resolve => setTimeout(resolve, 500));
 
-        const response = await fetch(`${VITE_API_BASE_URL}/core/increment-visit/`, {
+        const response = await fetch(`${API_BASE_URL}/core/increment-visit/`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -44,7 +47,7 @@ export async function incrementVisitCount(retryCount = 0) {
 
         if (response.status === 403 && retryCount < 2) {
             clearCachedToken();
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 500));
             return incrementVisitCount(retryCount + 1);
         }
 
