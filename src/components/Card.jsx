@@ -42,17 +42,17 @@ function CustomCard({ content }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 mx-2 md:mx-5 my-5">
+    <div className="p-4 mx-2 my-5 bg-white rounded-lg shadow-md md:mx-5">
       <div>
-        <p className="text-sm md:text-base mb-4">{content}</p>
-        <div className="flex flex-col md:flex-row gap-2">
+        <p className="mb-4 text-sm md:text-base">{content}</p>
+        <div className="flex flex-col gap-2 md:flex-row">
           <input
             type="text"
             value={userInput}
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
             placeholder="less screentime, creativity..."
-            className="flex-1 border rounded-md p-2 focus:border-green-600 focus:outline-none focus:ring-1 focus:ring-green-600"
+            className="flex-1 p-2 border rounded-md focus:border-green-600 focus:outline-none focus:ring-1 focus:ring-green-600"
           />
           <button
             onClick={handleSend}
@@ -67,8 +67,8 @@ function CustomCard({ content }) {
           </button>
         </div>
         {claudeResponse && (
-          <div className="mt-4 p-3 bg-gray-100 rounded-md">
-            <div className="text-sm md:text-base space-y-2">
+          <div className="p-3 mt-4 bg-gray-100 rounded-md">
+            <div className="space-y-2 text-sm md:text-base">
               {formatResponse(claudeResponse)}
             </div>
           </div>
