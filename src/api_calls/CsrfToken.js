@@ -1,10 +1,4 @@
-// Production URL
-const PROD_URL = 'https://oh-kale-no-backend.onrender.com';
-// Local development URL for local testing
-const DEV_URL = 'http://192.168.1.41:8000';
-// const DEV_URL = 'http://localhost:8000';
-
-const VITE_API_BASE_URL = import.meta.env.PROD ? PROD_URL : DEV_URL;
+import { API_BASE_URL } from './config';
 
 let cachedToken = null;
 
@@ -13,12 +7,16 @@ export async function fetchCsrfToken() {
         return cachedToken;
     }
 
+    // Add delay for Safari
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     try {
-        const response = await fetch(`${VITE_API_BASE_URL}/core/get-csrf-token/`, {
+        const response = await fetch(`${API_BASE_URL}/core/get-csrf-token/`, {
             method: 'GET',
             credentials: 'include',
             headers: {
                 'Accept': 'application/json',
+                'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             }
         });
