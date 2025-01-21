@@ -8,7 +8,7 @@ export async function fetchCsrfToken() {
     }
 
     // Add delay for Safari
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // await new Promise(resolve => setTimeout(resolve, 500));
 
     try {
         const response = await fetch(`${API_BASE_URL}/core/get-csrf-token/`, {
@@ -26,6 +26,11 @@ export async function fetchCsrfToken() {
         }
 
         const data = await response.json();
+        
+        // Add logging to debug Safaritoken issue
+        console.log('New CSRF token fetched:', data.csrfToken);
+        console.log('Cookies:', document.cookie);
+        
         cachedToken = data.csrfToken;
         return cachedToken;
     } catch (error) {
@@ -39,5 +44,6 @@ export function getCachedToken() {
 }
 
 export function clearCachedToken() {
+    console.log('Clearing cached token:', cachedToken);
     cachedToken = null;
 }

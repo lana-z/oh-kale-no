@@ -5,8 +5,7 @@ export async function getClaudeResponse(userInput, retryCount = 0) {
     try {
         const csrfToken = await fetchCsrfToken();
         
-        // Add delay for Safari
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // await new Promise(resolve => setTimeout(resolve, 500));
 
         const response = await fetch(`${API_BASE_URL}/core/get-claude-response/`, {
             method: 'POST',
@@ -16,14 +15,20 @@ export async function getClaudeResponse(userInput, retryCount = 0) {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrfToken,
                 'X-Requested-With': 'XMLHttpRequest',
-                'Origin': window.location.origin
+                'Origin': window.location.origin,
+                // Add SameSite attribute explicitly
+                'Cookie': `csrftoken=${csrfToken}; SameSite=Lax`
             },
             body: JSON.stringify({ user_input: userInput })
         });
 
         if (response.status === 403 && retryCount < 2) {
+            // Add logging to debug token mismatch
+            console.log('CSRF Token used:', csrfToken);
+            console.log('Response headers:', Object.fromEntries(response.headers));
+            
             clearCachedToken();
-            await new Promise(resolve => setTimeout(resolve, 500));
+            // await new Promise(resolve => setTimeout(resolve, 500));
             return getClaudeResponse(userInput, retryCount + 1);
         }
 
